@@ -5,7 +5,8 @@ Release:	0.1
 License:	GPL
 Group:		Development/Languages/Java
 URL:		http://jflex.de/
-Source0:	%{name}-%{version}.tar.gz
+Source0:	http://jflex.de/%{name}-%{version}.tar.gz
+# Source0-md5:	c77a9656aa20979f2268d7443995700f
 Patch0:		%{name}-Makefile.patch
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
