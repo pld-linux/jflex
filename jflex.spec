@@ -1,13 +1,12 @@
 Summary:	Fast Scanner Generator
 Summary(pl):	Szybki generator skanerów leksykalnych
 Name:		jflex
-Version:	1.3.5
+Version:	1.4.1
 Release:	0.1
 License:	GPL
 Group:		Development/Languages/Java
 Source0:	http://jflex.de/%{name}-%{version}.tar.gz
-# Source0-md5:	c77a9656aa20979f2268d7443995700f
-Patch0:		%{name}-Makefile.patch
+# Source0-md5:	9e4be6e826e6b344e84c0434d6fd4b46
 URL:		http://jflex.de/
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -47,14 +46,11 @@ Javadoc for %{name}.
 Dokumentacja javadoc dla pakietu %{name}.
 
 %prep
-%setup -q -n JFlex
-for j in $(find . -name "*.jar"); do mv $j $j.no; done
-find . -name "*.class" -exec rm {} \;
-%patch0
+%setup -q
 
 %build
-%{__make} -j1 -C src \
-	all javadoc
+cd src
+%{ant} gettools realclean jar
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -71,9 +67,9 @@ done
 cd -
 
 # javadoc
-install -d $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
-cp -pr api/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
-ln -s %{name}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{name} # ghost symlink
+#install -d $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
+#cp -pr api/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
+#ln -s %{name}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{name} # ghost symlink
 
 install -d $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
 cp -p doc/* $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
@@ -95,7 +91,7 @@ fi
 %doc %{_docdir}/%{name}-%{version}
 %{_javadir}/*.jar
 
-%files javadoc
-%defattr(644,root,root,755)
-%{_javadocdir}/%{name}-%{version}
-%ghost %{_javadocdir}/%{name}
+#%files javadoc
+#%defattr(644,root,root,755)
+#%{_javadocdir}/%{name}-%{version}
+#%ghost %{_javadocdir}/%{name}
