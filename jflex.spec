@@ -8,6 +8,8 @@ Group:		Development/Languages/Java
 Source0:	http://jflex.de/%{name}-%{version}.tar.gz
 # Source0-md5:	9e4be6e826e6b344e84c0434d6fd4b46
 URL:		http://jflex.de/
+# javadocs disappeared
+Obsoletes:	jflex-javadoc
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
