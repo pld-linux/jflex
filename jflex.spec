@@ -1,5 +1,5 @@
 Summary:	Fast Scanner Generator
-Summary(pl):	Szybki generator skanerów leksykalnych
+Summary(pl.UTF-8):   Szybki generator skanerÃ³w leksykalnych
 Name:		jflex
 Version:	1.4.1
 Release:	0.1
@@ -24,27 +24,27 @@ modification of Berkeley Yacc BYacc/J by Bob Jamison. It can also be
 used together with other parser generators like ANTLR or as a
 standalone tool.
 
-%description -l pl
-JFlex to generator analizatorów leksykalnych (znany tak¿e jako
-generator skanerów) dla Javy, napisany w Javie. Jest odtworzeniem
-bardzo przydatnego narzêdzia JLex stworzonego przez Elliota Berka w
+%description -l pl.UTF-8
+JFlex to generator analizatorÃ³w leksykalnych (znany takÅ¼e jako
+generator skanerÃ³w) dla Javy, napisany w Javie. Jest odtworzeniem
+bardzo przydatnego narzÄ™dzia JLex stworzonego przez Elliota Berka w
 Princetown University. Z tego, co Vern Paxson stwierdza o swoim
-narzêdziu flex dla C/C++, nie dziel± one ¿adnego kodu. JFlex jest
-zaprojektowany do pracy wraz z generatorem analizatorów LALR CUP
-napisanym przez Scotta Hudsona i javow± modyfikacj± Berkeley Yacca
-BYacc/J autorstwa Boba Jamisona. Mo¿e byæ u¿ywane tak¿e z innymi
-generatorami analizatorów takimi jak ANTLR albo jako samodzielne
-narzêdzie.
+narzÄ™dziu flex dla C/C++, nie dzielÄ… one Å¼adnego kodu. JFlex jest
+zaprojektowany do pracy wraz z generatorem analizatorÃ³w LALR CUP
+napisanym przez Scotta Hudsona i javowÄ… modyfikacjÄ… Berkeley Yacca
+BYacc/J autorstwa Boba Jamisona. MoÅ¼e byÄ‡ uÅ¼ywane takÅ¼e z innymi
+generatorami analizatorÃ³w takimi jak ANTLR albo jako samodzielne
+narzÄ™dzie.
 
 %package javadoc
 Summary:	Javadoc for %{name}
-Summary(pl):	Dokumentacja javadoc dla pakietu %{name}
+Summary(pl.UTF-8):   Dokumentacja javadoc dla pakietu %{name}
 Group:		Documentation
 
 %description javadoc
 Javadoc for %{name}.
 
-%description javadoc -l pl
+%description javadoc -l pl.UTF-8
 Dokumentacja javadoc dla pakietu %{name}.
 
 %prep
