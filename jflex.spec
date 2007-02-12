@@ -1,5 +1,5 @@
 Summary:	Fast Scanner Generator
-Summary(pl.UTF-8):   Szybki generator skanerów leksykalnych
+Summary(pl.UTF-8):	Szybki generator skanerów leksykalnych
 Name:		jflex
 Version:	1.4.1
 Release:	0.1
@@ -38,7 +38,7 @@ narzędzie.
 
 %package javadoc
 Summary:	Javadoc for %{name}
-Summary(pl.UTF-8):   Dokumentacja javadoc dla pakietu %{name}
+Summary(pl.UTF-8):	Dokumentacja javadoc dla pakietu %{name}
 Group:		Documentation
 
 %description javadoc
