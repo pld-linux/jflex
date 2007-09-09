@@ -3,8 +3,9 @@ Summary(pl.UTF-8):	Szybki generator skanerów leksykalnych
 Name:		jflex
 Version:	1.4.1
 Release:	0.1
-License:	GPL
+License:	GPL v2
 Group:		Development/Languages/Java
+#Source0Download: http://jflex.de/download.html
 Source0:	http://jflex.de/%{name}-%{version}.tar.gz
 # Source0-md5:	9e4be6e826e6b344e84c0434d6fd4b46
 URL:		http://jflex.de/
@@ -12,6 +13,9 @@ URL:		http://jflex.de/
 Obsoletes:	jflex-javadoc
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+# referenced from html
+%define		_noautocompressdoc	COPYRIGHT
 
 %description
 JFlex is a lexical analyzer generator (also known as scanner
@@ -48,10 +52,11 @@ Javadoc for %{name}.
 Dokumentacja javadoc dla pakietu %{name}.
 
 %prep
-%setup -q
+# use -c because of top-level symlink
+%setup -q -c
 
 %build
-cd src
+cd jflex/src
 %{ant} gettools realclean jar
 
 %install
@@ -59,7 +64,7 @@ rm -rf $RPM_BUILD_ROOT
 
 # jars
 install -d $RPM_BUILD_ROOT%{_javadir}
-cp -p lib/JFlex.jar \
+cp -p jflex/lib/JFlex.jar \
 	$RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
 
 cd $RPM_BUILD_ROOT%{_javadir}
@@ -72,9 +77,6 @@ cd -
 #install -d $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
 #cp -pr api/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
 #ln -s %{name}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{name} # ghost symlink
-
-install -d $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
-cp -p doc/* $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -90,7 +92,8 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc %{_docdir}/%{name}-%{version}
+# COPYRIGHT contains note about generated code license
+%doc jflex/doc/COPYRIGHT jflex/doc/*.{html,css,gif,png}
 %{_javadir}/*.jar
 
 #%files javadoc
