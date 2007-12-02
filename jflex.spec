@@ -1,15 +1,27 @@
+# TODO
+# - compile Source1, Source2 in spec (sources in src/)
+%include	/usr/lib/rpm/macros.java
 Summary:	Fast Scanner Generator
 Summary(pl.UTF-8):	Szybki generator skanerów leksykalnych
 Name:		jflex
 Version:	1.4.1
-Release:	0.1
+Release:	0.2
 License:	GPL v2
 Group:		Development/Languages/Java
-#Source0Download: http://jflex.de/download.html
+# Source0Download: http://jflex.de/download.html
 Source0:	http://jflex.de/%{name}-%{version}.tar.gz
 # Source0-md5:	9e4be6e826e6b344e84c0434d6fd4b46
+Source1:	http://jflex.sourceforge.net/jar/stable/JFlex-%{version}.jar
+# Source1-md5:	626c0c66135a48c042d3b35af95d274d
+Source2:	http://jflex.sourceforge.net/jar/stable/java_cup_10k-lsf.jar
+# Source2-md5:	26aef43b31cf3e0b581017e75a325b7b
 URL:		http://jflex.de/
-# javadocs disappeared
+BuildRequires:	jpackage-utils
+BuildRequires:	rpm-javaprov
+BuildRequires:	rpmbuild(macros) >= 1.300
+%if %(locale -a | grep -q '^en_US$'; echo $?)
+BuildRequires:	glibc-localedb-all
+%endif
 Obsoletes:	jflex-javadoc
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -53,50 +65,32 @@ Dokumentacja javadoc dla pakietu %{name}.
 
 %prep
 # use -c because of top-level symlink
-%setup -q -c
+%setup -qc
+install -d jflex/tools
+ln -s %{SOURCE1} jflex/tools/JFlex.jar
+ln -s %{SOURCE2} jflex/tools/java_cup.jar
 
 %build
-cd jflex/src
-%{ant} gettools realclean jar
+export LC_ALL=en_US # source code not US-ASCII
+%ant -f jflex/src/build.xml \
+	realclean jar
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 # jars
 install -d $RPM_BUILD_ROOT%{_javadir}
-cp -p jflex/lib/JFlex.jar \
-	$RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
-
-cd $RPM_BUILD_ROOT%{_javadir}
-for jar in *-%{version}.jar; do
-	ln -sf ${jar} `echo $jar| sed "s|-%{version}||g"`
-done
-cd -
-
-# javadoc
-#install -d $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
-#cp -pr api/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
-#ln -s %{name}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{name} # ghost symlink
+cp -a jflex/lib/JFlex.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
+ln -s %{name}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post javadoc
-rm -f %{_javadocdir}/%{name}
-ln -s %{name}-%{version} %{_javadocdir}/%{name}
-
-%postun javadoc
-if [ "$1" = "0" ]; then
-	rm -f %{_javadocdir}/%{name}
-fi
+ln -nfs %{name}-%{version} %{_javadocdir}/%{name}
 
 %files
 %defattr(644,root,root,755)
 # COPYRIGHT contains note about generated code license
 %doc jflex/doc/COPYRIGHT jflex/doc/*.{html,css,gif,png}
 %{_javadir}/*.jar
-
-#%files javadoc
-#%defattr(644,root,root,755)
-#%{_javadocdir}/%{name}-%{version}
-#%ghost %{_javadocdir}/%{name}
