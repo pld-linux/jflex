@@ -13,9 +13,11 @@ Source0:	http://jflex.de/%{name}-%{version}.tar.gz
 # Source0-md5:	9e4be6e826e6b344e84c0434d6fd4b46
 Source1:	http://jflex.sourceforge.net/jar/stable/JFlex-%{version}.jar
 # Source1-md5:	626c0c66135a48c042d3b35af95d274d
-Source2:	http://jflex.sourceforge.net/jar/stable/java_cup_10k-lsf.jar
-# Source2-md5:	26aef43b31cf3e0b581017e75a325b7b
+Patch0:		%{name}-anttask.patch
+Patch1:		%{name}-notarget.patch
 URL:		http://jflex.de/
+BuildRequires:	java_cup >= 0.11a
+BuildRequires:	java-gcj-compat-devel
 BuildRequires:	jpackage-utils
 BuildRequires:	rpm-javaprov
 BuildRequires:	rpmbuild(macros) >= 1.300
@@ -66,13 +68,19 @@ Dokumentacja javadoc dla pakietu %{name}.
 %prep
 # use -c because of top-level symlink
 %setup -qc
+
+%patch0 -p1
+%patch1 -p1
+
 install -d jflex/tools
 ln -s %{SOURCE1} jflex/tools/JFlex.jar
-ln -s %{SOURCE2} jflex/tools/java_cup.jar
 
 %build
 export LC_ALL=en_US # source code not US-ASCII
-%ant -f jflex/src/build.xml \
+JAVACUPJAR=$(find-jar java_cup)
+cd jflex/src
+%ant -Dbuild.compiler=extJavac \
+	-Dcup.jar=$JAVACUPJAR \
 	realclean jar
 
 %install
