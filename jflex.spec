@@ -16,7 +16,7 @@ Source1:	http://jflex.sourceforge.net/jar/stable/JFlex-%{version}.jar
 Patch0:		%{name}-anttask.patch
 Patch1:		%{name}-notarget.patch
 URL:		http://jflex.de/
-BuildRequires:	java_cup >= 0.11a
+BuildRequires:	java-cup >= 0.11a
 BuildRequires:	java-gcj-compat-devel
 BuildRequires:	jpackage-utils
 BuildRequires:	rpm-javaprov
@@ -77,7 +77,7 @@ ln -s %{SOURCE1} jflex/tools/JFlex.jar
 
 %build
 export LC_ALL=en_US # source code not US-ASCII
-JAVACUPJAR=$(find-jar java_cup)
+JAVACUPJAR=$(find-jar cup)
 cd jflex/src
 %ant -Dbuild.compiler=extJavac \
 	-Dcup.jar=$JAVACUPJAR \
