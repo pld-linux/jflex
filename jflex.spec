@@ -1,24 +1,34 @@
 # TODO
-# - compile Source1, Source2 in spec (sources in src/)
+# - compile Source1 in spec (sources in src/)
+#
+# Conditional build:
+%if "%{pld_release}" == "ti"
+%bcond_without	java_sun	# build with gcj
+%else
+%bcond_with	java_sun	# build with java-sun
+%endif
+
 %include	/usr/lib/rpm/macros.java
 Summary:	Fast Scanner Generator
 Summary(pl.UTF-8):	Szybki generator skanerów leksykalnych
 Name:		jflex
-Version:	1.4.1
+Version:	1.4.3
 Release:	1
 License:	GPL v2
 Group:		Development/Languages/Java
 # Source0Download: http://jflex.de/download.html
 Source0:	http://jflex.de/%{name}-%{version}.tar.gz
-# Source0-md5:	9e4be6e826e6b344e84c0434d6fd4b46
+# Source0-md5:	27a30015859957d8af30bc336d40bc30
 Source1:	http://jflex.sourceforge.net/jar/stable/JFlex-%{version}.jar
-# Source1-md5:	626c0c66135a48c042d3b35af95d274d
-Patch0:		%{name}-anttask.patch
-Patch1:		%{name}-notarget.patch
+# Source1-md5:	aa044225d600eaa4b5d2cea9b5c2d279
+Patch0:		%{name}-notarget.patch
 URL:		http://jflex.de/
+BuildRequires:	ant >= 1.4
 BuildRequires:	java-cup >= 0.11a
-BuildRequires:	java-gcj-compat-devel
+%{!?with_java_sun:BuildRequires:	java-gcj-compat-devel}
+%{?with_java_sun:BuildRequires:	java-sun}
 BuildRequires:	jpackage-utils
+BuildRequires:	junit >= 3.8.1
 BuildRequires:	rpm-javaprov
 BuildRequires:	rpmbuild(macros) >= 1.300
 %if %(locale -a | grep -q '^en_US$'; echo $?)
@@ -68,27 +78,26 @@ Dokumentacja javadoc dla pakietu %{name}.
 %prep
 # use -c because of top-level symlink
 %setup -qc
-
+mv jflex-*/* .
 %patch0 -p1
-%patch1 -p1
 
-install -d jflex/tools
-ln -s %{SOURCE1} jflex/tools/JFlex.jar
+install -d tools
+ln -s %{SOURCE1} tools/JFlex.jar
 
 %build
 export LC_ALL=en_US # source code not US-ASCII
-JAVACUPJAR=$(find-jar cup)
-cd jflex/src
-%ant -Dbuild.compiler=extJavac \
-	-Dcup.jar=$JAVACUPJAR \
-	realclean jar
+required_jars="cup cup-runtime junit"
+CLASSPATH=$(build-classpath $required_jars)
+export CLASSPATH
+cd src
+%ant realclean jar
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 # jars
 install -d $RPM_BUILD_ROOT%{_javadir}
-cp -a jflex/lib/JFlex.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
+cp -a lib/JFlex.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
 ln -s %{name}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
 
 %clean
@@ -100,5 +109,5 @@ ln -nfs %{name}-%{version} %{_javadocdir}/%{name}
 %files
 %defattr(644,root,root,755)
 # COPYRIGHT contains note about generated code license
-%doc jflex/doc/COPYRIGHT jflex/doc/*.{html,css,gif,png}
+%doc doc/COPYRIGHT doc/*.{html,css,gif,png}
 %{_javadir}/*.jar
