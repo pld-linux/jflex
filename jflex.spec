@@ -5,7 +5,7 @@ Summary:	Fast Scanner Generator
 Summary(pl.UTF-8):	Szybki generator skanerów leksykalnych
 Name:		jflex
 Version:	1.4.1
-Release:	0.2
+Release:	1
 License:	GPL v2
 Group:		Development/Languages/Java
 # Source0Download: http://jflex.de/download.html
