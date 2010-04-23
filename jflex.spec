@@ -2,12 +2,6 @@
 # - compile Source1 in spec (sources in src/)
 #
 # Conditional build:
-%if "%{pld_release}" == "ti"
-%bcond_without	java_sun	# build with gcj
-%else
-%bcond_with	java_sun	# build with java-sun
-%endif
-
 %include	/usr/lib/rpm/macros.java
 Summary:	Fast Scanner Generator
 Summary(pl.UTF-8):	Szybki generator skanerów leksykalnych
@@ -25,8 +19,7 @@ Patch0:		%{name}-notarget.patch
 URL:		http://jflex.de/
 BuildRequires:	ant >= 1.4
 BuildRequires:	java-cup >= 0.11a
-%{!?with_java_sun:BuildRequires:	java-gcj-compat-devel}
-%{?with_java_sun:BuildRequires:	java-sun}
+BuildRequires:	jdk
 BuildRequires:	jpackage-utils
 BuildRequires:	junit >= 3.8.1
 BuildRequires:	rpm-javaprov
