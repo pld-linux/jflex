@@ -2,7 +2,6 @@
 # - compile Source1 in spec (sources in src/)
 #
 # Conditional build:
-%include	/usr/lib/rpm/macros.java
 Summary:	Fast Scanner Generator
 Summary(pl.UTF-8):	Szybki generator skanerów leksykalnych
 Name:		jflex
