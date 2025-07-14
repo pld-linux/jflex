@@ -71,7 +71,7 @@ Dokumentacja javadoc dla pakietu %{name}.
 # use -c because of top-level symlink
 %setup -qc
 mv jflex-*/* .
-%patch0 -p1
+%patch -P0 -p1
 
 install -d tools
 ln -s %{SOURCE1} tools/JFlex.jar
